@@ -30,10 +30,7 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    /**
-     * POST /api/bookings
-     * Book a ride (PASSENGER only)
-     */
+  
     @PostMapping
     @PreAuthorize("hasRole('PASSENGER')")
     public ResponseEntity<ApiResponse<BookingResponse>> bookRide(
@@ -48,10 +45,7 @@ public class BookingController {
         );
     }
 
-    /**
-     * GET /api/bookings/{bookingId}
-     * Get booking details
-     */
+  
     @GetMapping("/{bookingId}")
     public ResponseEntity<ApiResponse<BookingResponse>> getBooking(
             @PathVariable Long bookingId) {
@@ -60,10 +54,7 @@ public class BookingController {
         return ResponseEntity.ok(ApiResponse.success("Booking found", response));
     }
 
-    /**
-     * GET /api/bookings/my-bookings
-     * Get all bookings made by current passenger (PASSENGER only)
-     */
+   
     @GetMapping("/my-bookings")
     @PreAuthorize("hasRole('PASSENGER')")
     public ResponseEntity<ApiResponse<Page<BookingResponse>>> getMyBookings(
@@ -77,10 +68,7 @@ public class BookingController {
         return ResponseEntity.ok(ApiResponse.success("Your bookings", response));
     }
 
-    /**
-     * GET /api/bookings/ride-bookings
-     * Get all bookings for rides created by current driver (DRIVER only)
-     */
+   
     @GetMapping("/ride-bookings")
     @PreAuthorize("hasRole('DRIVER')")
     public ResponseEntity<ApiResponse<Page<BookingResponse>>> getBookingsForMyRides(
@@ -94,11 +82,7 @@ public class BookingController {
         return ResponseEntity.ok(ApiResponse.success("Bookings for your rides", response));
     }
 
-    /**
-     * PUT /api/bookings/{bookingId}/confirm
-     * Confirm a booking (DRIVER only)
-     * Reduces available seats when confirmed
-     */
+  
     @PutMapping("/{bookingId}/confirm")
     @PreAuthorize("hasRole('DRIVER')")
     public ResponseEntity<ApiResponse<BookingResponse>> confirmBooking(
@@ -113,11 +97,7 @@ public class BookingController {
         ));
     }
 
-    /**
-     * DELETE /api/bookings/{bookingId}
-     * Cancel a booking (PASSENGER or DRIVER)
-     * Returns seat to available pool if was confirmed
-     */
+    
     @DeleteMapping("/{bookingId}")
     public ResponseEntity<ApiResponse<BookingResponse>> cancelBooking(
             @PathVariable Long bookingId) {
@@ -131,9 +111,6 @@ public class BookingController {
         ));
     }
 
-    /**
-     * Utility method to extract current user ID from authentication
-     */
     private Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
